@@ -1,9 +1,12 @@
-import CandleFields from "./CandleFields"
+import CandleFields from "./CandleFields";
+import { ICandlePack } from "./interfaces";
 
-const CandlesPack = ({candlePack}:{candlePack: ICandlePack}) => {
+const CandlesPack = ({ candlePack }: { candlePack: ICandlePack }) => {
   return (
-    <CandleFields />
-  )
-}
+    <>
+      <CandleFields />
+    </>
+  );
+};
 
-export default CandlesPack
+export default CandlesPack;
