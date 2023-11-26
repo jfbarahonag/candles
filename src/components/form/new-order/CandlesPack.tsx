@@ -1,10 +1,10 @@
-import CandleFields from "./CandleFields";
+import CandlesPackOptions from "./CandlesPackOptions";
 import { ICandlePack } from "./interfaces";
 
 const CandlesPack = ({ candlePack }: { candlePack: ICandlePack }) => {
   return (
     <>
-      <CandleFields />
+      <CandlesPackOptions candlePackId={candlePack.id} />
     </>
   );
 };

@@ -1,7 +1,16 @@
-const CandleFields = () => {
+import { useNewFormContext } from "./NewOrderContext";
+
+const CandleFields = ({ candlePackId }: { candlePackId: string }) => {
+
+  const { candlesPacks, setCandlesPacks } = useNewFormContext();
+
   const changeCandleType = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value)
-  }
+    console.log(e.target.value);
+  };
+
+  const removeCandlesPack = () => {
+    setCandlesPacks(candlesPacks.filter(cp => cp.id !== candlePackId));
+  };
 
   return (
     <>
@@ -35,9 +44,10 @@ const CandleFields = () => {
           </div>
         </div>
       </div>
-      <button 
+      <button
         className="w-1/12 flex flex-col justify-center"
         type="button"
+        onClick={removeCandlesPack}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
