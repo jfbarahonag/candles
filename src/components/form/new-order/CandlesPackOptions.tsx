@@ -1,11 +1,23 @@
 import { useNewFormContext } from "./NewOrderContext";
+import { isCandlePackType } from "./helper";
 
 const CandleFields = ({ candlePackId }: { candlePackId: string }) => {
 
   const { candlesPacks, setCandlesPacks } = useNewFormContext();
 
   const changeCandleType = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value);
+    const currentCandlesPack = candlesPacks.find(cp => cp.id === candlePackId);
+
+    if (!currentCandlesPack || !isCandlePackType(e.target.value)) return;
+
+    currentCandlesPack.type = e.target.value;
+
+    // update the change in the array of candles packs
+    const newCandlesPacks = candlesPacks.map(cp =>
+      cp.id === candlePackId ? currentCandlesPack : cp
+    );
+    setCandlesPacks(newCandlesPacks);
+
   };
 
   const removeCandlesPack = () => {

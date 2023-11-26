@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {v4 as uuidv4} from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import { ICandlePack } from "./interfaces";
 
@@ -15,15 +15,15 @@ export default function NewOrderForm() {
   const addCandlePack = () => {
     const newCandlePack: ICandlePack = {
       id: uuidv4(),
-      type: 'Desconocido',
-      names: []
+      type: "Desconocido",
+      names: ["", "", "", "", "", "", "", "", "", ""], //10 names
     };
 
     setCandlesPacks([...candlesPacks, newCandlePack]);
-  }
+  };
 
   return (
-    <NewFormContext.Provider value={{candlesPacks, setCandlesPacks}}>
+    <NewFormContext.Provider value={{ candlesPacks, setCandlesPacks }}>
       <form className="w-full max-w-lg py-4">
         {/* datos de comprador */}
         <Row>
@@ -61,8 +61,8 @@ export default function NewOrderForm() {
         </Row>
         {/* datos de velas */}
         <Row>
-          <div className="w-full flex flex-col gap-y-2">
-            <button 
+          <div className="px-3 w-full flex flex-col">
+            <button
               className="mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
               onClick={addCandlePack}
               type="button"
@@ -70,13 +70,10 @@ export default function NewOrderForm() {
               Agregar paquete de velas
             </button>
           </div>
-          {
-            candlesPacks.length > 0 && (
-              candlesPacks.map(cp => (
-                <CandlesPack key={cp.id} candlePack={cp} />
-              ))
-            )
-          }
+          {candlesPacks.length > 0 &&
+            candlesPacks.map((cp) => (
+              <CandlesPack key={cp.id} candlePack={cp} />
+            ))}
         </Row>
       </form>
     </NewFormContext.Provider>
