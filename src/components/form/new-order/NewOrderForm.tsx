@@ -1,12 +1,24 @@
-import {useState} from "react";
+import { useState } from "react";
+import {v4 as uuidv4} from "uuid";
 
 import Row from "./Row";
-import CandleFields from "./CandleFields";
 import BaseFields from "./BaseFields";
 
+import CandlesPack from "./CandlesPack";
+
 export default function NewOrderForm() {
-  const [candles, setCandles] = useState([]);
+  const [candlesPack, setCandlesPack] = useState<ICandlePack[]>([]);
   const [showCandleFields, setShowCandleFields] = useState(true);
+
+  const addCandlePack = () => {
+    const newCandlePack: ICandlePack = {
+      id: uuidv4(),
+      type: 'Desconocido',
+      names: []
+    };
+
+    setCandlesPack([...candlesPack, newCandlePack]);
+  }
 
   return (
     <form className="w-full max-w-lg py-4">
@@ -45,15 +57,30 @@ export default function NewOrderForm() {
         </div>
       </Row>
       {/* datos de velas */}
-      <Row >
-        <CandleFields />
+      <Row>
+        <div className="w-full flex flex-col gap-y-2">
+          <button 
+            className="mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+            onClick={addCandlePack}
+            type="button"
+          >
+            Agregar paquete de velas
+          </button>
+        </div>
+        {
+          candlesPack.length > 0 && (
+            candlesPack.map(cp => (
+              <CandlesPack key={cp.id} candlePack={cp} />
+            ))
+          )
+        }
       </Row>
       {/* velas adicionales */}
-      <h1>Velas adicionales</h1>
+      {/* <h1>Velas adicionales</h1> */}
       {/* datos de bases */}
-      <Row>
+      {/* <Row>
         <BaseFields />
-      </Row>
+      </Row> */}
     </form>
   );
 }
