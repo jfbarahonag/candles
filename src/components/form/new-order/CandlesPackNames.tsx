@@ -13,17 +13,19 @@ const CandlesPackNames = ({ candlePackId }: { candlePackId: string }) => {
   }
   
   return (
-    <ul className="px-3">
+    <ul className="px-3 w-full">
       {
         (currentCandlesPack.type === 'Colores' || currentCandlesPack.type === 'Doradas') &&
         currentCandlesPack.names.map((name, idx) => (
-          <input 
-            className="w-full my-2 p-1"
-            key={`${name}-${idx}`}
-            type="text"
-            defaultValue={name}
-            placeholder="Nombre de la vela"
-          />
+          <div key={`${name}-${idx}`}>
+            <span className="w-1/12">{idx+1}. </span>
+            <input 
+              className="w-11/12 my-2 p-1"
+              type="text"
+              defaultValue={name}
+              placeholder="Nombre de la vela"
+            />
+          </div>
         ))
       }
     </ul>
