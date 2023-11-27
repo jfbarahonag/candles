@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNewFormContext } from "./NewOrderContext";
+import CandlesPackNameFields from "./CandlesPackNameFields";
 
 const CandlesPackNames = ({ candlePackId }: { candlePackId: string }) => {
-  const { candlesPacks, setCandlesPacks } = useNewFormContext();
+  const { getCandlesPackById } = useNewFormContext();
   
   const [currentCandlesPack, setCurrentCandlesPack] = useState(
-    candlesPacks.find(cp => cp.id === candlePackId)
-  )
+    getCandlesPackById(candlePackId)
+  );
 
   if (!currentCandlesPack) {
     return <h1>NOT FOUND</h1>
@@ -17,15 +18,11 @@ const CandlesPackNames = ({ candlePackId }: { candlePackId: string }) => {
       {
         (currentCandlesPack.type === 'Colores' || currentCandlesPack.type === 'Doradas') &&
         currentCandlesPack.names.map((name, idx) => (
-          <div key={`${name}-${idx}`}>
-            <span className="w-1/12">{idx+1}. </span>
-            <input 
-              className="w-11/12 my-2 p-1"
-              type="text"
-              defaultValue={name}
-              placeholder="Nombre de la vela"
-            />
-          </div>
+          <CandlesPackNameFields 
+            key={`${idx}-${name}`} 
+            candlesPack={currentCandlesPack} 
+            fieldIdx={idx} 
+          />
         ))
       }
     </ul>

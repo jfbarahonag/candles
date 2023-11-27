@@ -2,30 +2,27 @@ import { useNewFormContext } from "./NewOrderContext";
 import { isCandlePackType } from "./helper";
 
 const CandleFields = ({ candlePackId }: { candlePackId: string }) => {
-
-  const { candlesPacks, setCandlesPacks } = useNewFormContext();
+  const { updateCandlesPackById, removeCandlesPackById, getCandlesPackById } =
+    useNewFormContext();
 
   const changeCandleType = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const currentCandlesPack = candlesPacks.find(cp => cp.id === candlePackId);
+    const currentCandlesPack = getCandlesPackById(candlePackId);
 
     if (!currentCandlesPack || !isCandlePackType(e.target.value)) return;
 
     currentCandlesPack.type = e.target.value;
 
     // update the change in the array of candles packs
-    const newCandlesPacks = candlesPacks.map(cp =>
-      cp.id === candlePackId ? currentCandlesPack : cp
-    );
-    setCandlesPacks(newCandlesPacks);
-
+    updateCandlesPackById(currentCandlesPack);
   };
 
   const removeCandlesPack = () => {
-    setCandlesPacks(candlesPacks.filter(cp => cp.id !== candlePackId));
+    removeCandlesPackById(candlePackId);
   };
 
   return (
-    <>
+    <div className="flex items-end">
+      {/* select */}
       <div className="w-11/12 px-3 mb-6 md:mb-0">
         {/* Diseño */}
         <label
@@ -56,7 +53,9 @@ const CandleFields = ({ candlePackId }: { candlePackId: string }) => {
           </div>
         </div>
       </div>
+      {/* remove button */}
       <button
+        disabled={false}
         className="w-1/12 flex flex-col justify-center"
         type="button"
         onClick={removeCandlesPack}
@@ -72,7 +71,7 @@ const CandleFields = ({ candlePackId }: { candlePackId: string }) => {
           <path d="M 10 2 L 9 3 L 4 3 L 4 5 L 5 5 L 5 20 C 5 20.522222 5.1913289 21.05461 5.5683594 21.431641 C 5.9453899 21.808671 6.4777778 22 7 22 L 17 22 C 17.522222 22 18.05461 21.808671 18.431641 21.431641 C 18.808671 21.05461 19 20.522222 19 20 L 19 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 7 5 L 17 5 L 17 20 L 7 20 L 7 5 z M 9 7 L 9 18 L 11 18 L 11 7 L 9 7 z M 13 7 L 13 18 L 15 18 L 15 7 L 13 7 z"></path>
         </svg>
       </button>
-    </>
+    </div>
   );
 };
 

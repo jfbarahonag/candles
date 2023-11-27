@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { ICandlePack } from "./interfaces";
+import { ICandlesPack } from "./interfaces";
 
 import Row from "./Row";
 
@@ -9,21 +9,63 @@ import CandlesPack from "./CandlesPack";
 import { NewFormContext } from "./NewOrderContext";
 
 export default function NewOrderForm() {
-  const [candlesPacks, setCandlesPacks] = useState<ICandlePack[]>([]);
-  const [showCandleFields, setShowCandleFields] = useState(true);
+  const [candlesPacks, setCandlesPacks] = useState<ICandlesPack[]>([]);
 
   const addCandlePack = () => {
-    const newCandlePack: ICandlePack = {
+    const newCandlePack: ICandlesPack = {
       id: uuidv4(),
       type: "Desconocido",
       names: ["", "", "", "", "", "", "", "", "", ""], //10 names
     };
 
-    setCandlesPacks([...candlesPacks, newCandlePack]);
+    setCandlesPacks([newCandlePack, ...candlesPacks]);
+  };
+
+  const getCandlesPackByIdx = (idx: number) => {
+    return candlesPacks.at(idx);
+  };
+
+  const getCandlesPackById = (id: string) => {
+    return candlesPacks.find(cp => cp.id === id);
+  };
+
+  const updateCandlesPackByIdx = (idx: number, newObject: ICandlesPack) => {
+    if (idx < 0 || idx > candlesPacks.length) return;
+
+    setCandlesPacks((prev) => [
+      ...prev.slice(0, idx),
+      newObject,
+      ...prev.slice(idx + 1),
+    ]);
+  };
+
+  const updateCandlesPackById = (newObject: ICandlesPack) => {
+    setCandlesPacks((prev) =>
+      prev.map((cp) => (cp.id === newObject.id ? newObject : cp))
+    );
+  };
+
+  const removeCandlesPackByIdx = (idx: number) => {
+    setCandlesPacks((prev) => [...prev.slice(0, idx), ...prev.slice(idx + 1)]);
+  };
+
+  const removeCandlesPackById = (id: string) => {
+    setCandlesPacks(candlesPacks.filter((cp) => cp.id !== id));
   };
 
   return (
-    <NewFormContext.Provider value={{ candlesPacks, setCandlesPacks }}>
+    <NewFormContext.Provider
+      value={{
+        candlesPacks,
+        setCandlesPacks,
+        getCandlesPackByIdx,
+        getCandlesPackById,
+        updateCandlesPackByIdx,
+        updateCandlesPackById,
+        removeCandlesPackByIdx,
+        removeCandlesPackById,
+      }}
+    >
       <form className="w-full max-w-lg py-4">
         {/* datos de comprador */}
         <Row>
