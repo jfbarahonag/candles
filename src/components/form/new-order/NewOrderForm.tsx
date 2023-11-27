@@ -114,7 +114,7 @@ export default function NewOrderForm() {
           </div>
           {candlesPacks.length > 0 &&
             candlesPacks.map((cp) => (
-              <CandlesPack key={cp.id} candlePack={cp} />
+              <CandlesPack key={cp.id} candlesPack={cp} />
             ))}
         </Row>
       </form>

@@ -20,7 +20,7 @@ const getTextButton = (disabled: boolean): string => {
   }`;
 };
 
-const CandlesPack = ({ candlePack }: { candlePack: ICandlesPack }) => {
+const CandlesPack = ({ candlesPack }: { candlesPack: ICandlesPack }) => {
   const [disableCandlesPack, setDisableCandlesPack] = useState(false);
 
   const saveCandlesPack = () => {
@@ -30,10 +30,10 @@ const CandlesPack = ({ candlePack }: { candlePack: ICandlesPack }) => {
   return (
     <>
       <fieldset className="flex flex-col w-full" disabled={disableCandlesPack}>
-        <CandlesPackOptions candlePackId={candlePack.id} />
-        <CandlesPackNames candlePackId={candlePack.id} />
+        <CandlesPackOptions candlePackId={candlesPack.id} />
+        <CandlesPackNames candlePackId={candlesPack.id} />
       </fieldset>
-      {candlePack.type !== "Desconocido" && (
+      {candlesPack.type !== "Desconocido" && (
         <div className="my-3 px-3 w-full flex flex-row justify-center">
           <button
             className={`mb-2 text-white font-bold py-2 px-4 rounded-full ${getColorButton(
