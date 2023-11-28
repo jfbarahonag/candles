@@ -22,11 +22,13 @@ export default function NewOrderForm() {
   };
 
   const getCandlesPackByIdx = (idx: number) => {
-    return candlesPacks.at(idx);
+    return structuredClone(candlesPacks.at(idx));
   };
 
   const getCandlesPackById = (id: string) => {
-    return candlesPacks.find(cp => cp.id === id);
+    return structuredClone(
+      candlesPacks.find(cp => cp.id === id)
+    );
   };
 
   const updateCandlesPackByIdx = (idx: number, newObject: ICandlesPack) => {
@@ -34,14 +36,14 @@ export default function NewOrderForm() {
 
     setCandlesPacks((prev) => [
       ...prev.slice(0, idx),
-      newObject,
+      structuredClone(newObject),
       ...prev.slice(idx + 1),
     ]);
   };
 
   const updateCandlesPackById = (newObject: ICandlesPack) => {
     setCandlesPacks((prev) =>
-      prev.map((cp) => (cp.id === newObject.id ? newObject : cp))
+      prev.map((cp) => (cp.id === newObject.id ? structuredClone(newObject) : cp))
     );
   };
 
