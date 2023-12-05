@@ -10,3 +10,8 @@ export interface IBase {
   id: string,
   phrase?: string
 }
+
+export interface IClient {
+  name: string,
+  phone: string
+}

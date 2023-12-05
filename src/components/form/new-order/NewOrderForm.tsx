@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { ICandlesPack, IBase } from "./interfaces";
+import { ICandlesPack, IBase, IClient } from "./interfaces";
 
 import Row from "./Row";
 
@@ -12,7 +12,18 @@ import Base from "./Base";
 export default function NewOrderForm() {
   const [candlesPacks, setCandlesPacks] = useState<ICandlesPack[]>([]);
   const [bases, setBases] = useState<IBase[]>([]);
+  const [client, setClient] = useState<IClient>({
+    name: "",
+    phone: "",
+  });
+  /* ------------------------------------------------------------------------- */
+  const updateClientName = (name: string) => {
+    setClient((c) => ({ ...c, name }));
+  };
 
+  const updateClientPhone = (phone: string) => {
+    setClient((c) => ({ ...c, phone }));
+  };
   /* ------------------------------------------------------------------------- */
   const addCandlePack = () => {
     const newCandlePack: ICandlesPack = {
@@ -61,11 +72,11 @@ export default function NewOrderForm() {
   const addBase = () => {
     const newBase: IBase = {
       id: uuidv4(),
-      phrase: ""
+      phrase: "",
     };
 
     setBases([newBase, ...bases]);
-  }
+  };
 
   const getBaseById = (id: string) => {
     return structuredClone(bases.find((cp) => cp.id === id));
@@ -73,9 +84,7 @@ export default function NewOrderForm() {
 
   const updateBaseById = (newObject: IBase) => {
     setBases((prev) =>
-      prev.map((b) =>
-        b.id === newObject.id ? structuredClone(newObject) : b
-      )
+      prev.map((b) => (b.id === newObject.id ? structuredClone(newObject) : b))
     );
   };
   /* ------------------------------------------------------------------------- */
@@ -85,21 +94,21 @@ export default function NewOrderForm() {
       console.log("Nada para enviar");
       return;
     }
-    if (
-      candlesPacks.some(cp => cp.type === 'Desconocido')
-    ) {
+    if (candlesPacks.some((cp) => cp.type === "Desconocido")) {
       alert("No puede haber Paquetes de velas de tipo Desconocido");
       return;
     }
     const data = {
+      client,
       candlesPacks,
-      bases
-    }
-    console.log(JSON.stringify(data))
+      bases,
+    };
+    console.log(JSON.stringify(data));
     //TODO: Connect to API
     setCandlesPacks([]);
     setBases([]);
-  } 
+    setClient({ name: "", phone: "" });
+  };
   return (
     <NewFormContext.Provider
       value={{
@@ -126,14 +135,14 @@ export default function NewOrderForm() {
               Nombre completo
             </label>
             <input
-              className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+              value={client.name}
+              className="appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
               id="grid-full-name"
               type="text"
               placeholder="Jane"
+              required
+              onChange={(e) => updateClientName(e.currentTarget.value)}
             />
-            <p className="text-red-500 text-xs italic">
-              Please fill out this field.
-            </p>
           </div>
           <div className="w-full md:w-1/2 px-3">
             <label
@@ -143,10 +152,12 @@ export default function NewOrderForm() {
               Número de celular
             </label>
             <input
+              value={client.phone}
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-phone-number"
               type="tel"
               placeholder="XXXXXXXXXX"
+              onChange={(e) => updateClientPhone(e.currentTarget.value)}
             />
           </div>
         </Row>
@@ -168,7 +179,7 @@ export default function NewOrderForm() {
         </Row>
         {/* datos de bases */}
         <Row>
-        <div className="px-3 w-full flex flex-col">
+          <div className="px-3 w-full flex flex-col">
             <button
               className="mb-2 bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded-full"
               onClick={addBase}
@@ -177,15 +188,12 @@ export default function NewOrderForm() {
               Agregar base
             </button>
           </div>
-          {bases.length > 0 &&
-            bases.map((b) => (
-              <Base key={b.id} base={b} />
-            ))}
+          {bases.length > 0 && bases.map((b) => <Base key={b.id} base={b} />)}
         </Row>
         {/* enviar */}
         <Row>
           <div className="px-3 w-full flex flex-col">
-            <button 
+            <button
               type="submit"
               className="mb-2 bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-full"
             >
