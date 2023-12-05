@@ -3,7 +3,7 @@ import { useNewFormContext } from "./NewOrderContext";
 import CandlesPackNameFields from "./CandlesPackNameFields";
 
 const CandlesPackNames = ({ candlePackId }: { candlePackId: string }) => {
-  const { candlesPacks, getCandlesPackById, updateCandlesPackById } =
+  const { candlesPacks, getCandlesPackById } =
     useNewFormContext();
 
   const [currentCandlesPack, setCurrentCandlesPack] = useState(
@@ -22,7 +22,7 @@ const CandlesPackNames = ({ candlePackId }: { candlePackId: string }) => {
     <ul className="px-3 w-full">
       {(currentCandlesPack.type === "Colores" ||
         currentCandlesPack.type === "Doradas") &&
-        currentCandlesPack.names.map((name, idx) => (
+        currentCandlesPack.names.map((_, idx) => (
           <CandlesPackNameFields key={`${candlePackId}-${idx}`}
             candlesPack={currentCandlesPack}
             fieldIdx={idx}
