@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import CandlesPackNames from "./CandlesPackNames";
 import CandlesPackOptions from "./CandlesPackOptions";
@@ -18,49 +18,9 @@ const getTextButton = (disabled: boolean): string => {
 };
 
 const CandlesPack = ({ candlesPack }: { candlesPack: ICandlesPack }) => {
-  const { candlesPacks, getCandlesPackById } = useNewFormContext();
-
-  const [candlesPacksCopy, setCandlesPacksCopy] = useState(structuredClone(candlesPacks));
+  const { getCandlesPackById } = useNewFormContext();
 
   const [disableCandlesPack, setDisableCandlesPack] = useState(false);
-
-  const updateName = (id: string, idx: number, value: string) => {
-    const cp = structuredClone(
-      candlesPacksCopy.find(cp => cp.id === id)
-    );
-    if (!cp) return;
-    console.log("valid cp")
-    cp.names[idx] = value;
-
-    setCandlesPacksCopy((prev) =>
-      prev.map(
-        (cpc) => (cpc.id === cp.id ? structuredClone(cp) : structuredClone(cpc))
-      )
-    );
-    console.log("first")
-  }
-
-  useEffect(() => {
-    console.log(candlesPacksCopy)
-  }, [candlesPacksCopy])
-
-  useEffect(() => {
-    setCandlesPacksCopy( prevCpc => {
-        if (candlesPacks.length === prevCpc.length + 1) {
-          // new item
-          return structuredClone([candlesPacks[0], ...prevCpc])
-        } else if (candlesPacks.length < prevCpc.length) {
-          // remove item
-          return structuredClone(
-            prevCpc.filter(obj1 => candlesPacks.find(obj2 => obj2.id === obj1.id))
-          );
-        }
-        // update item
-        return candlesPacks.map(cp => cp);
-      }
-    );
-  }, [candlesPacks])
-  
 
   const saveCandlesPack = () => {
     if (!disableCandlesPack) {
@@ -79,7 +39,7 @@ const CandlesPack = ({ candlesPack }: { candlesPack: ICandlesPack }) => {
     <>
       <fieldset className="flex flex-col w-full" disabled={disableCandlesPack}>
         <CandlesPackOptions candlePackId={candlesPack.id} />
-        <CandlesPackNames candlePackId={candlesPack.id} updateName={updateName} />
+        <CandlesPackNames candlePackId={candlesPack.id} />
       </fieldset>
       {candlesPack.type !== "Desconocido" && (
         <div className="my-3 px-3 w-full flex flex-row justify-center">
