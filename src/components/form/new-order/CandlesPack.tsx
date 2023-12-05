@@ -3,7 +3,6 @@ import { useState } from "react";
 import CandlesPackNames from "./CandlesPackNames";
 import CandlesPackOptions from "./CandlesPackOptions";
 import { ICandlesPack } from "./interfaces";
-import { useNewFormContext } from "./NewOrderContext";
 
 const getColorButton = (disabled: boolean): string => {
   return `${
@@ -18,18 +17,10 @@ const getTextButton = (disabled: boolean): string => {
 };
 
 const CandlesPack = ({ candlesPack }: { candlesPack: ICandlesPack }) => {
-  const { getCandlesPackById } = useNewFormContext();
 
   const [disableCandlesPack, setDisableCandlesPack] = useState(false);
 
   const saveCandlesPack = () => {
-    if (!disableCandlesPack) {
-      //is going to save
-      const currentCandlesPack = getCandlesPackById(candlesPack.id);
-      alert(JSON.stringify(currentCandlesPack));
-
-    }
-
     setDisableCandlesPack(!disableCandlesPack);
   };
 

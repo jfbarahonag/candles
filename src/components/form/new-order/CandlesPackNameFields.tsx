@@ -1,6 +1,5 @@
-import { useState } from "react";
-
 import { ICandlesPack } from "./interfaces";
+import { useNewFormContext } from "./NewOrderContext";
 
 const CandlesPackNameFields = ({
   candlesPack,
@@ -10,16 +9,22 @@ const CandlesPackNameFields = ({
   fieldIdx: number;
 }) => {
 
-  const [name, setName] = useState(candlesPack.names[fieldIdx]);
+  const { getCandlesPackById, updateCandlesPackById } =
+    useNewFormContext();
 
   const changeNameOfCandlesPack = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // update the input
-    setName(e.target.value);
-  };
+    const currentCandlesPack = getCandlesPackById(candlesPack.id);
 
-  const setCandlesPackName = () => {
-    
-  }
+    if (!currentCandlesPack) return;
+
+    const idxName = Number(e.currentTarget.id.split(" - ")[1]);
+
+    if (isNaN(idxName)) return;
+
+    currentCandlesPack.names[idxName] = e.currentTarget.value;
+
+    updateCandlesPackById(currentCandlesPack);
+  };
 
   return (
     <div className="flex">
@@ -29,9 +34,10 @@ const CandlesPackNameFields = ({
         </span>
       </div>
       <input
+        id={`${candlesPack.id} - ${fieldIdx}`}
         className="w-10/12 my-2 p-1"
         type="text"
-        value={name}
+        value={candlesPack.names[fieldIdx]}
         placeholder="Nombre de la vela"
         onChange={changeNameOfCandlesPack}
       />
