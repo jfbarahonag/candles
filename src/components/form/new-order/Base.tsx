@@ -7,7 +7,7 @@ const Base = ({ base }: { base: IBase }) => {
   const changePhrase = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentBase = getBaseById(base.id);
     if (!currentBase) return;
-    currentBase.phrase = e.currentTarget.value.trim();
+    currentBase.phrase = e.currentTarget.value;
     updateBaseById(currentBase);
   };
 

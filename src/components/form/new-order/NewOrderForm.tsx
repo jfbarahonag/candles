@@ -79,7 +79,27 @@ export default function NewOrderForm() {
     );
   };
   /* ------------------------------------------------------------------------- */
-
+  const onSubmit = (e: React.FormEvent<HTMLElement>) => {
+    e.preventDefault();
+    if (candlesPacks.length === 0 && bases.length === 0) {
+      console.log("Nada para enviar");
+      return;
+    }
+    if (
+      candlesPacks.some(cp => cp.type === 'Desconocido')
+    ) {
+      alert("No puede haber Paquetes de velas de tipo Desconocido");
+      return;
+    }
+    const data = {
+      candlesPacks,
+      bases
+    }
+    console.log(JSON.stringify(data))
+    //TODO: Connect to API
+    setCandlesPacks([]);
+    setBases([]);
+  } 
   return (
     <NewFormContext.Provider
       value={{
@@ -95,7 +115,7 @@ export default function NewOrderForm() {
         updateBaseById,
       }}
     >
-      <form className="w-full max-w-lg py-4">
+      <form className="w-full max-w-lg py-4" onSubmit={onSubmit}>
         {/* datos de comprador */}
         <Row>
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -161,6 +181,17 @@ export default function NewOrderForm() {
             bases.map((b) => (
               <Base key={b.id} base={b} />
             ))}
+        </Row>
+        {/* enviar */}
+        <Row>
+          <div className="px-3 w-full flex flex-col">
+            <button 
+              type="submit"
+              className="mb-2 bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-full"
+            >
+              Enviar
+            </button>
+          </div>
         </Row>
       </form>
     </NewFormContext.Provider>
