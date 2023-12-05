@@ -5,3 +5,8 @@ export interface ICandlesPack {
   type: CandlePackType,
   names: string[]
 }
+
+export interface IBase {
+  id: string,
+  phrase?: string
+}

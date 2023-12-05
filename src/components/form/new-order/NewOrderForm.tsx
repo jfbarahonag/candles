@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { ICandlesPack } from "./interfaces";
+import { ICandlesPack, IBase } from "./interfaces";
 
 import Row from "./Row";
 
 import CandlesPack from "./CandlesPack";
 import { NewFormContext } from "./NewOrderContext";
+import Base from "./Base";
 
 export default function NewOrderForm() {
   const [candlesPacks, setCandlesPacks] = useState<ICandlesPack[]>([]);
+  const [bases, setBases] = useState<IBase[]>([]);
 
+  /* ------------------------------------------------------------------------- */
   const addCandlePack = () => {
     const newCandlePack: ICandlesPack = {
       id: uuidv4(),
@@ -26,9 +29,7 @@ export default function NewOrderForm() {
   };
 
   const getCandlesPackById = (id: string) => {
-    return structuredClone(
-      candlesPacks.find(cp => cp.id === id)
-    );
+    return structuredClone(candlesPacks.find((cp) => cp.id === id));
   };
 
   const updateCandlesPackByIdx = (idx: number, newObject: ICandlesPack) => {
@@ -43,7 +44,9 @@ export default function NewOrderForm() {
 
   const updateCandlesPackById = (newObject: ICandlesPack) => {
     setCandlesPacks((prev) =>
-      prev.map((cp) => (cp.id === newObject.id ? structuredClone(newObject) : cp))
+      prev.map((cp) =>
+        cp.id === newObject.id ? structuredClone(newObject) : cp
+      )
     );
   };
 
@@ -54,6 +57,28 @@ export default function NewOrderForm() {
   const removeCandlesPackById = (id: string) => {
     setCandlesPacks(candlesPacks.filter((cp) => cp.id !== id));
   };
+  /* ------------------------------------------------------------------------- */
+  const addBase = () => {
+    const newBase: IBase = {
+      id: uuidv4(),
+      phrase: ""
+    };
+
+    setBases([newBase, ...bases]);
+  }
+
+  const getBaseById = (id: string) => {
+    return structuredClone(bases.find((cp) => cp.id === id));
+  };
+
+  const updateBaseById = (newObject: IBase) => {
+    setBases((prev) =>
+      prev.map((b) =>
+        b.id === newObject.id ? structuredClone(newObject) : b
+      )
+    );
+  };
+  /* ------------------------------------------------------------------------- */
 
   return (
     <NewFormContext.Provider
@@ -66,6 +91,8 @@ export default function NewOrderForm() {
         updateCandlesPackById,
         removeCandlesPackByIdx,
         removeCandlesPackById,
+        getBaseById,
+        updateBaseById,
       }}
     >
       <form className="w-full max-w-lg py-4">
@@ -117,6 +144,22 @@ export default function NewOrderForm() {
           {candlesPacks.length > 0 &&
             candlesPacks.map((cp) => (
               <CandlesPack key={cp.id} candlesPack={cp} />
+            ))}
+        </Row>
+        {/* datos de bases */}
+        <Row>
+        <div className="px-3 w-full flex flex-col">
+            <button
+              className="mb-2 bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded-full"
+              onClick={addBase}
+              type="button"
+            >
+              Agregar base
+            </button>
+          </div>
+          {bases.length > 0 &&
+            bases.map((b) => (
+              <Base key={b.id} base={b} />
             ))}
         </Row>
       </form>

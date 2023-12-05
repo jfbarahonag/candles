@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { ICandlesPack } from "./interfaces";
+import { IBase, ICandlesPack } from "./interfaces";
 
 export type NewOrderContext = {
   candlesPacks: ICandlesPack[]
@@ -10,6 +10,8 @@ export type NewOrderContext = {
   updateCandlesPackById: (newObject: ICandlesPack) => void,
   removeCandlesPackByIdx: (idx: number) => void,
   removeCandlesPackById: (id: string) => void,
+  getBaseById: (id: string) => IBase | undefined,
+  updateBaseById: (newObject: IBase) => void,
 }
 
 export const NewFormContext = createContext<NewOrderContext>({
@@ -21,6 +23,8 @@ export const NewFormContext = createContext<NewOrderContext>({
   updateCandlesPackById: () => {},
   removeCandlesPackByIdx: () => {},
   removeCandlesPackById: () => {},
+  getBaseById: () => undefined,
+  updateBaseById: () => {},
 });
 
 export const useNewFormContext = () => useContext(NewFormContext);
